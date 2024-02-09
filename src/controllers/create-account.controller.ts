@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Body,
   ConflictException,
@@ -7,10 +6,10 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common'
-import { hash } from 'bcryptjs'
-import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { hash } from 'bcryptjs'
 import { z } from 'zod'
+import { ZodValidationPipe } from 'src/pipes/zod-validation-pipe'
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -21,7 +20,7 @@ const createAccountBodySchema = z.object({
 type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 
 @Controller('/accounts')
-export class CreateAccountnController {
+export class CreateAccountController {
   constructor(private prisma: PrismaService) {}
 
   @Post()
@@ -35,17 +34,20 @@ export class CreateAccountnController {
         email,
       },
     })
+
     if (userWithSameEmail) {
-      throw new ConflictException('User with same e-mail addres already exist.')
+      throw new ConflictException(
+        'User with same e-mail address already exists.',
+      )
     }
 
-    const hashPassword = await hash(password, 8)
+    const hashedPassword = await hash(password, 8)
 
     await this.prisma.user.create({
       data: {
         name,
         email,
-        password: hashPassword,
+        password: hashedPassword,
       },
     })
   }
