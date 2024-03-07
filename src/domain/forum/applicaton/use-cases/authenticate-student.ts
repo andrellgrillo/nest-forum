@@ -1,8 +1,8 @@
 import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
 import { StudentsRepository } from '../repositories/students-repository'
-import { HashComparer } from '../../cryptography/hash-compare'
-import { Encrypter } from '../../cryptography/encrypter'
+import { HashComparer } from '../cryptography/hash-comparer'
+import { Encrypter } from '../cryptography/encrypter'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 
 interface AuthenticateStudentUseCaseRequest {
@@ -12,7 +12,9 @@ interface AuthenticateStudentUseCaseRequest {
 
 type AuthenticateStudentUseCaseResponse = Either<
   WrongCredentialsError,
-  { accessToken: string }
+  {
+    accessToken: string
+  }
 >
 
 @Injectable()
@@ -33,7 +35,6 @@ export class AuthenticateStudentUseCase {
       return left(new WrongCredentialsError())
     }
 
-    // const hashedPassword = await this.encrypter.encrypt(password)
     const isPasswordValid = await this.hashComparer.compare(
       password,
       student.password,
