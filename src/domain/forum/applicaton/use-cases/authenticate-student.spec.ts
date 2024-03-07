@@ -13,6 +13,7 @@ describe('Authenticate Student', () => {
   beforeEach(() => {
     inMemoryStudentsRepository = new InMemoryStudentsRepository()
     fakeHasher = new FakeHasher()
+    fakeEncrypter = new FakeEncrypter()
     sut = new AuthenticateStudentUseCase(
       inMemoryStudentsRepository,
       fakeHasher,
@@ -33,7 +34,7 @@ describe('Authenticate Student', () => {
       password: '123456',
     })
 
-    expect(result.isRight).toBe(true)
+    expect(result.isRight()).toBe(true)
     expect(result.value).toEqual({
       accessToken: expect.any(String),
     })
