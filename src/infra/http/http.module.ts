@@ -9,6 +9,8 @@ import { FetchRecentQuestionsUseCase } from '@/domain/forum/applicaton/use-cases
 import { RegisterStudentsUseCase } from '@/domain/forum/applicaton/use-cases/register-students'
 import { AuthenticateStudentUseCase } from '@/domain/forum/applicaton/use-cases/authenticate-student'
 import { CryptographyModule } from '../cryptography/cryptography.module'
+import { GetQuestionBySlugController } from './controllers/get-question-by-slug.controller'
+import { GetQuestionBySlugUseCase } from '@/domain/forum/applicaton/use-cases/get-question-by-slug'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -17,12 +19,14 @@ import { CryptographyModule } from '../cryptography/cryptography.module'
     AuthenticateController,
     CreateQuestionController,
     FetchRecentQuestionsController,
+    GetQuestionBySlugController
   ],
   providers: [
     CreateQuestionUseCase,
     FetchRecentQuestionsUseCase,
     RegisterStudentsUseCase,
     AuthenticateStudentUseCase,
+    GetQuestionBySlugUseCase
   ],
 })
 export class HttpModule {}

@@ -1,7 +1,0 @@
-POST http://localhost:3333/sessions
-content-type: application/json
-
-{
-  "email": "teste@exemplo.com",
-  "password": "123123"
-}
