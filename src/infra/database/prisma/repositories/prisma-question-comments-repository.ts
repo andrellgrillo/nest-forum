@@ -14,10 +14,10 @@ export class PrismaQuestionCommentsRepository
   async findById(id: string): Promise<QuestionComment | null> {
     const questionComment = await this.prisma.comment.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     })
-    if(!questionComment) {
+    if (!questionComment) {
       return null
     }
     return PrismaQuestionCommentMapper.toDomain(questionComment)
@@ -29,13 +29,13 @@ export class PrismaQuestionCommentsRepository
   ): Promise<QuestionComment[]> {
     const questionComments = await this.prisma.comment.findMany({
       where: {
-        questionId
+        questionId,
       },
       orderBy: {
-        createdAt: 'desc'
+        createdAt: 'desc',
       },
       take: 20,
-      skip: (page -1)*20
+      skip: (page - 1) * 20,
     })
     return questionComments.map(PrismaQuestionCommentMapper.toDomain)
   }
@@ -43,15 +43,15 @@ export class PrismaQuestionCommentsRepository
   async create(questionComment: QuestionComment): Promise<void> {
     const data = PrismaQuestionCommentMapper.toPrisma(questionComment)
     await this.prisma.comment.create({
-      data
+      data,
     })
   }
 
   async delete(questionComment: QuestionComment): Promise<void> {
-    await this.prisma.question.delete({
+    await this.prisma.comment.delete({
       where: {
-        id: questionComment.id.toString()
-      }
+        id: questionComment.id.toString(),
+      },
     })
   }
 }
