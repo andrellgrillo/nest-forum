@@ -1,12 +1,13 @@
-import { Either, left, right } from '@/core/either'
-import { Answer } from '../../enterprise/entities/answer'
+import { Answer } from '@/domain/forum/enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answers-repository'
-import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found'
-import { NotAllowedError } from '../../../../core/errors/errors/not-allowed-error'
-import { AnswerAttachmentsRepository } from '../repositories/answer-attachments-repository'
+import { Either, left, right } from '@/core/either'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachment-list'
-import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
+import { Injectable } from '@nestjs/common'
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found'
+import { AnswerAttachmentsRepository } from '../repositories/answer-attachments-repository'
 
 interface EditAnswerUseCaseRequest {
   authorId: string
@@ -17,9 +18,12 @@ interface EditAnswerUseCaseRequest {
 
 type EditAnswerUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
-  { answer: Answer }
+  {
+    answer: Answer
+  }
 >
 
+@Injectable()
 export class EditAnswerUseCase {
   constructor(
     private answersRepository: AnswersRepository,
@@ -33,11 +37,12 @@ export class EditAnswerUseCase {
     attachmentsIds,
   }: EditAnswerUseCaseRequest): Promise<EditAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId)
+
     if (!answer) {
       return left(new ResourceNotFoundError())
     }
 
-    if (authorId !== answer.authorId.toValue()) {
+    if (authorId !== answer.authorId.toString()) {
       return left(new NotAllowedError())
     }
 
@@ -48,17 +53,20 @@ export class EditAnswerUseCase {
       currentAnswerAttachments,
     )
 
-    const answerAttachment = attachmentsIds.map((attachmentId) => {
+    const answerAttachments = attachmentsIds.map((attachmentId) => {
       return AnswerAttachment.create({
         attachmentId: new UniqueEntityID(attachmentId),
         answerId: answer.id,
       })
     })
-    answerAttachmentList.update(answerAttachment)
+
+    answerAttachmentList.update(answerAttachments)
+
     answer.attachments = answerAttachmentList
     answer.content = content
 
     await this.answersRepository.save(answer)
+
     return right({
       answer,
     })

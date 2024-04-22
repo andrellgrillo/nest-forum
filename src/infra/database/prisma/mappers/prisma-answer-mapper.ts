@@ -6,9 +6,9 @@ export class PrismaAnswerMapper {
   static toDomain(raw: PrismaAnswer): Answer {
     return Answer.create(
       {
-        content: raw.content,
         authorId: new UniqueEntityID(raw.authorId),
         questionId: new UniqueEntityID(raw.questionId),
+        content: raw.content,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
