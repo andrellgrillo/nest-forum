@@ -15,5 +15,4 @@ export class PrismaAnswerAttachmentMapper {
       new UniqueEntityID(raw.id),
     )
   }
-
 }

@@ -13,7 +13,7 @@ export class R2Storage implements Uploader {
   private client: S3Client
 
   constructor(private envService: EnvService) {
-    const accountId = envService.get('CLOUDFLARE_ACCOUNT_ID')
+    const accountId = envService.get('CLOUDFlARE_ACCOUNT_ID')
 
     this.client = new S3Client({
       endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
