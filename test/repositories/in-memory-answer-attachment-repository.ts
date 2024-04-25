@@ -4,6 +4,7 @@ import { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-atta
 export class InMemoryAnswerAttachmentsRepository
   implements AnswerAttachmentsRepository
 {
+  public items: AnswerAttachment[] = []
   async findManyByAnswerId(answerId: string) {
     const answerAttachments = this.items.filter(
       (item) => item.answerId.toString() === answerId,
@@ -28,6 +29,4 @@ export class InMemoryAnswerAttachmentsRepository
     })
     this.items = answerAttachments
   }
-
-  public items: AnswerAttachment[] = []
 }
