@@ -21,6 +21,7 @@ describe('Fetch Question Comments', () => {
   it('should be able to fetch question comments', async () => {
     const student = makeStudent({ name: 'John Doe' })
     inMemoryStudentsRepository.items.push(student)
+
     const comment1 = makeQuestionComment({
       questionId: new UniqueEntityID('question-1'),
       authorId: student.id,
