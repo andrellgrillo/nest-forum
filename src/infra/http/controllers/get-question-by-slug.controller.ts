@@ -1,7 +1,6 @@
-import { GetQuestionBySlugUseCase } from "@/domain/forum/applicaton/use-cases/get-question-by-slug";
-import { BadRequestException, Controller, Get, Param, Query } from "@nestjs/common";
-import { QuestionPresenter } from "../presenters/question-presenter";
-
+import { GetQuestionBySlugUseCase } from '@/domain/forum/applicaton/use-cases/get-question-by-slug'
+import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
+import { QuestionDetailsPresenter } from '../presenters/question-details-presenter'
 
 @Controller('/questions/:slug')
 export class GetQuestionBySlugController {
@@ -10,11 +9,11 @@ export class GetQuestionBySlugController {
   @Get()
   async handle(@Param('slug') slug: string) {
     const result = await this.getQuestionBySlug.execute({
-      slug
+      slug,
     })
     if (result.isLeft()) {
       throw new BadRequestException()
     }
-    return { question: QuestionPresenter.toHTTP(result.value.question)}
+    return { question: QuestionDetailsPresenter.toHTTP(result.value.question) }
   }
 }
