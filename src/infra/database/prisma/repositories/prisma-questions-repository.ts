@@ -45,9 +45,10 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
   async findDetailsBySlug(slug: string): Promise<QuestionDetails | null> {
     const cacheHit = await this.cacheRepository.get(`question:${slug}:details`)
     if (cacheHit) {
-      console.log(cacheHit, JSON.parse(cacheHit))
-      const cacheData = JSON.parse(cacheHit)
-      return cacheData
+      console.log(cacheHit, JSON.stringify(cacheHit))
+      // console.log(cacheHit.toString())
+      // const cacheData = JSON.parse(cacheHit)
+      return JSON.parse(JSON.stringify(cacheHit))
     }
     const question = await this.prisma.question.findUnique({
       where: {

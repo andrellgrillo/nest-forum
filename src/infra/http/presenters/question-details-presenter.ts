@@ -10,7 +10,7 @@ export class QuestionDetailsPresenter {
       title: questionDetails.title,
       content: questionDetails.content,
       slug: questionDetails.slug.value,
-      bestAnswerId: questionDetails.bestAnswerId?.toString,
+      bestAnswerId: questionDetails.bestAnswerId?.toString(),
       attachments: questionDetails.attachments.map(AttachmentPresenter.toHTTP),
       createdAt: questionDetails.createdAt,
       updatedAt: questionDetails.updatedAt,
